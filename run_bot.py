@@ -2,16 +2,29 @@ import os
 import telegram
 from telegram.ext import Updater, CommandHandler
 
+import json
+
+def pprint(name, obj):
+
+    try:
+        s = json.dumps(obj, indent=4)
+    except Exception as e:
+        s = "no json: " + str(obj)
+
+    print("---")
+    print(name, ": ", s)
+    print("---")
 
 def hello(update, context):
     
-    print(context.bot)
-    print(context.chat_data)
+    pprint("context", context)
+    pprint("update", update)
+    pprint("chat_data", context.chat_data)
 
     text = update["message"]["text"]
     print(text)
 
-    msg = "Hello you too"
+    msg = "Hello " + update["message"]["chat"]["first_name"] + "!"
 
     context.bot.send_message(chat_id=update.effective_chat.id, text=msg)
 
